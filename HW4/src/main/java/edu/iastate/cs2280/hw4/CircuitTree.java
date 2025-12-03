@@ -54,18 +54,20 @@ public class CircuitTree {
 		
 		String output = "";
 		
-		if(curNode instanceof VarNode) output += "\n";
+//		if(curNode instanceof VarNode) output += "\n";
 		output += prefix;
 		
 		
 		
 		if(isLeftChild) {
-			output += "|-- ";
+			output += "|-- " + curNode.symbol;
 		}else {
-			output += "\\-- ";
+			output += "\\-- " + curNode.symbol;
 		}
 		
-		output += curNode.symbol;
+		//If it is NOT the right child or a the only child of a not gate, and it ISN'T a leaf, add a newline 
+		if(!((!isLeftChild)&& curNode.left == null && curNode.right == null)) output += "\n";
+		
 		
 		String newPrefix = prefix + (isLeftChild ? "|   " : "    ");
 		
