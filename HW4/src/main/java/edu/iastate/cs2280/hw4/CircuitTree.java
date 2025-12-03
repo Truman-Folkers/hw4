@@ -44,11 +44,11 @@ public class CircuitTree {
 	public void printStructure() {
 		
 		System.out.println("\\-- " + root.symbol);
-		System.out.println(buildOutput(root.left, "    "));
-		System.out.println(buildOutput(root.right, "    "));
+		System.out.println(buildOutput(root.left, "    ", true));
+		System.out.println(buildOutput(root.right, "    ", false));
 	}
 	
-	private String buildOutput(Node curNode, String prefix){
+	private String buildOutput(Node curNode, String prefix, boolean isLeftChild){
 		if(curNode == null) return "";
 		
 		
@@ -59,18 +59,18 @@ public class CircuitTree {
 		
 		
 		
-		if(curNode.hasChild()) {
+		if(isLeftChild) {
 			output += "|-- ";
 		}else {
-			output += "\\--";
+			output += "\\-- ";
 		}
 		
 		output += curNode.symbol;
 		
-		String newPrefix = prefix + (curNode.hasChild() ? "|   " : "    ");
+		String newPrefix = prefix + (isLeftChild ? "|   " : "    ");
 		
-		output += buildOutput(curNode.left, newPrefix);
-		output += buildOutput(curNode.right, newPrefix);
+		output += buildOutput(curNode.left, newPrefix, true);
+		output += buildOutput(curNode.right, newPrefix, false);
 		
 		return output;
 	}
