@@ -1,8 +1,7 @@
 package edu.iastate.cs2280.hw4;
 
 public class NotNode extends UnaryGateNode {
-	public Node left;
-	public String symbol;
+	
 	
 	public NotNode(Node left) {
 		super(left, null);

@@ -43,11 +43,37 @@ public class CircuitTree {
 	
 	public void printStructure() {
 		
-		System.out.println("/-- " + root.symbol);
+		System.out.println("\\-- " + root.symbol);
 		System.out.println(buildOutput(root.left, "    "));
 		System.out.println(buildOutput(root.right, "    "));
 	}
 	
+	private String buildOutput(Node curNode, String prefix){
+		if(curNode == null) return "";
+		
+		
+		String output = "";
+		
+		if(curNode instanceof VarNode) output += "\n";
+		output += prefix;
+		
+		
+		
+		if(curNode.hasChild()) {
+			output += "|-- ";
+		}else {
+			output += "\\--";
+		}
+		
+		output += curNode.symbol;
+		
+		String newPrefix = prefix + (curNode.hasChild() ? "|   " : "    ");
+		
+		output += buildOutput(curNode.left, newPrefix);
+		output += buildOutput(curNode.right, newPrefix);
+		
+		return output;
+	}
 	
 	
 	private Node build(Scanner sc) {
@@ -89,27 +115,7 @@ public class CircuitTree {
 		return null;
 	}
 									
-	private String buildOutput(Node curNode, String prefix){
-		if(curNode == null) return "";
-		
-		String output = "";
-		output += prefix;
-		
-		if(curNode.hasChild()) {
-			output += "|-- ";
-		}else {
-			output += "/--";
-		}
-		
-		output += "\n" + curNode.symbol;
-		
-		String newPrefix = prefix + (curNode.hasChild() ? "|   " : "    ");
-		
-		buildOutput(curNode.left, newPrefix);
-		buildOutput(curNode.right, newPrefix);
-		
-		return output;
-	}
+	
 	
 	public static void main(String[] args) throws FileNotFoundException {
 	//1) take a filename from cmd-line

@@ -7,6 +7,7 @@ public abstract class Node {
 	public Node left;
 	public Node right;
 	
+	
 	public abstract int evaluate();
 	
 	public abstract boolean hasChild();

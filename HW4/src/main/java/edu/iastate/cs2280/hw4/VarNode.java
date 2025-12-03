@@ -2,7 +2,7 @@ package edu.iastate.cs2280.hw4;
 
 public class VarNode extends Node {
 	public int state;
-	public String symbol;
+	
 	
 	public VarNode(String name) {
 		this.symbol = name;

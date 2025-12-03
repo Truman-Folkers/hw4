@@ -1,9 +1,7 @@
 package edu.iastate.cs2280.hw4;
 
 public class XorNode extends BinaryGateNode{
-	public Node left;
-	public Node right;
-	public String symbol;
+	
 	
 	public XorNode(Node left, Node right) {
 		super(left, right);
