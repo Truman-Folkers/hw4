@@ -44,37 +44,28 @@ public class CircuitTree {
 	public void printStructure() {
 		
 		System.out.println("\\-- " + root.symbol);
-		System.out.println(buildOutput(root.left, "    ", true));
-		System.out.println(buildOutput(root.right, "    ", false));
+		buildOutput(root.left, "    ", true);
+		buildOutput(root.right, "    ", false);
 	}
 	
-	private String buildOutput(Node curNode, String prefix, boolean isLeftChild){
-		if(curNode == null) return "";
-		
-		
-		String output = "";
-		
-//		if(curNode instanceof VarNode) output += "\n";
-		output += prefix;
-		
-		
-		
-		if(isLeftChild) {
-			output += "|-- " + curNode.symbol;
-		}else {
-			output += "\\-- " + curNode.symbol;
-		}
-		
-		//If it is NOT the right child or a the only child of a not gate, and it ISN'T a leaf, add a newline 
-		if(!((!isLeftChild)&& curNode.left == null && curNode.right == null)) output += "\n";
-		
-		
-		String newPrefix = prefix + (isLeftChild ? "|   " : "    ");
-		
-		output += buildOutput(curNode.left, newPrefix, true);
-		output += buildOutput(curNode.right, newPrefix, false);
-		
-		return output;
+	private void buildOutput(Node curNode, String prefix, boolean isLeftChild){
+		if (curNode == null) return;
+
+	    // Rule 1 & 2
+	    System.out.print(prefix);
+	    System.out.print(isLeftChild ? "|-- " : "\\-- ");
+	    System.out.println(curNode.symbol);
+
+	    // Determine new prefix (Rule 3)
+	    String newPrefix = prefix + (isLeftChild ? "|   " : "    ");
+
+	    // Recursively print children (Rule 4 & 5)
+	    if (curNode.left != null)
+	        buildOutput(curNode.left, newPrefix, true);
+
+	    if (curNode.right != null)
+	        buildOutput(curNode.right, newPrefix, false);
+
 	}
 	
 	
