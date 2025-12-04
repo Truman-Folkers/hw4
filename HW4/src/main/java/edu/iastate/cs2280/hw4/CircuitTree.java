@@ -5,10 +5,23 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author tfolkers
+ */
 public class CircuitTree {
+	/**
+	 * The root node, the only thing we have to story for the entire tree
+	 */
 	private Node root;
+	/**
+	 * map of variables to keep track of for the evaulate method
+	 */
 	private ArrayList<VarNode> varMap;
 	
+	/**
+	 * constructor that initializes scanner, the varmap, and builds the tree off of the root
+	 * @param circuitDescription - the txt desc of the circuit
+	 */
 	public CircuitTree(String circuitDescription) {
 		Scanner sc = new Scanner(circuitDescription);
 		
@@ -18,6 +31,10 @@ public class CircuitTree {
 		
 	}
 	
+	/**
+	 * evaluates the tree's output recursively with each node's evaluate method which returns an int
+	 * @param inputLine - the line of values to take that represent the variable's states
+	 */
 	public void evaluate(String inputLine) {
 		Scanner sc = new Scanner(inputLine);
 		
@@ -40,26 +57,36 @@ public class CircuitTree {
 	}
 	
 	
-	
+	/**
+	 * The method for users/main method to call to print the circuit structure
+	 * first prints the root, then the left of the list, then the right
+	 */
 	public void printStructure() {
 		
+		System.out.println("CIRCUIT STRUCTURE:");
 		System.out.println("\\-- " + root.symbol);
 		buildOutput(root.left, "    ", true);
 		buildOutput(root.right, "    ", false);
 	}
 	
+	/**
+	 * Builds and prints the circuit structure output in directory style implementation
+	 * @param curNode
+	 * @param prefix
+	 * @param isLeftChild
+	 */
 	private void buildOutput(Node curNode, String prefix, boolean isLeftChild){
 		if (curNode == null) return;
 
-	    // Rule 1 & 2
+	    // add first prefix
 	    System.out.print(prefix);
 	    System.out.print(isLeftChild ? "|-- " : "\\-- ");
 	    System.out.println(curNode.symbol);
 
-	    // Determine new prefix (Rule 3)
+	    //make new prefix
 	    String newPrefix = prefix + (isLeftChild ? "|   " : "    ");
 
-	    // Recursively print children (Rule 4 & 5)
+	    // recursively print children
 	    if (curNode.left != null)
 	        buildOutput(curNode.left, newPrefix, true);
 
@@ -68,17 +95,21 @@ public class CircuitTree {
 
 	}
 	
-	
+	/**
+	 * Builds the tree recursively and returns the root node
+	 * @param sc - scanner of the input file first line containing symbols
+	 * @return the root node
+	 */
 	private Node build(Scanner sc) {
 		String token = sc.next();
 		
-		
+		//If its a not gate return a node node and recursively do the rest of the list
 		if(token.equals("!")) {
 			Node node = new NotNode(build(sc));
 			
 			return node;
 		}
-		
+		//Same with other gates
 		else if(token.equals("&") || token.equals("|") || token.equals("^")) {
 			switch(token) {
 				case "&":
@@ -98,7 +129,7 @@ public class CircuitTree {
 					
 			}
 		}
-		
+		//Do a varnode and add to the varmap arraylist
 		else {
 			 VarNode node = new VarNode(token);
 		     varMap.add(node);  // remember this variable
@@ -109,37 +140,34 @@ public class CircuitTree {
 	}
 									
 	
-	
+	/**
+	 * The main method to run the program
+	 * @param args takes the filename
+	 * @throws FileNotFoundException in case of a wrong filename
+	 */
 	public static void main(String[] args) throws FileNotFoundException {
-	//1) take a filename from cmd-line
-	//2) print tree structure
-	//3) print result for each input line
 		
+		if (args.length == 0) {
+	        System.out.println("Usage: java edu.iastate.cs2280.hw4.CircuitTree <filename>");
+	        return;
+	    }
 		
-//		if (args.length == 0) {
-//	        System.out.println("Usage: java edu.iastate.cs2280.hw4.CircuitTree <filename>");
-//	        return;
-//	    }
-		
-		Scanner fileInputScanner = new Scanner(System.in);
-		
-		System.out.println("Enter a filename");
-		String fileName = fileInputScanner.next();
 	
-								//args[0]
-	    File file = new File(fileName);
+		//1) take a filename from cmd-line
+	    File file = new File(args[0]);
 	    Scanner sc = new Scanner(file);
 	    
 	    
 	    // Line 1 = circuit description
 	    String circuitDescription = sc.nextLine();
 	
-	    // Build tree
+	    //Build tree
 	    CircuitTree tree = new CircuitTree(circuitDescription);
 	
-	    System.out.println("CIRCUIT STRUCTURE:");
+	  //2) print tree structure
 	    tree.printStructure();
 	
+	  //3) print result for each input line
 	    System.out.println("\nEVALUATION:");
 	
 	    // Remaining lines = inputs
